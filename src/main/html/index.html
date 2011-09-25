@@ -1,0 +1,99 @@
+<html>
+<head>
+	<title>
+		Youngster - Dependency Manager
+	</title>
+	<link type="text/css" href="../../../lib/css/redips.css" rel="Stylesheet" />
+	<link type="text/css" href="../../../lib/css/jquery-ui-1.8.16.custom.css" rel="Stylesheet" />
+	<link type="text/css" href="../../../lib/css/jqcontextmenu.css" rel="Stylesheet" />	
+	<link type="text/css" href="../css/main.css" rel="Stylesheet" />
+	<script src="../../../lib/js/color.js"></script>
+	<script src="../../../lib/js/jquery-1.6.4.min.js"></script>
+	<script src="../../../lib/js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script src="../../../lib/js/redips-drag-min.js"></script>
+  	<script src="../../../lib/js/jqcontextmenu.js"></script>	
+	<script src="../js/util.js"></script>
+	<script src="../js/default-json.js"></script>
+	<script src="../js/ui-services.js"></script>
+	<script src="../js/dependencies.js"></script>	
+	<script src="../js/ui-hosts.js"></script>
+	<script src="../js/ui-json.js"></script>
+	<script src="../js/ui-init.js"></script>
+</head>
+<body>
+	<br/>
+	<div class="youngster-heading"><img src="../images/logo.png"/></div>
+	<div class="youngster-subheading">
+		Youngster is an application-level dependency management tool that helps map out host clusters and dependencies between them.
+		<br/>
+		It helps prototype your system, share knowledge between teams or between Dev and Ops, analyze potential failures by looking at dependencies, and document your system in an easy way.
+	</div>
+	<div class="separator"></div>
+
+	<table width="100%">
+		<tr>
+			<td width="40%" valign="top">
+				<button id="add_service">Add new service</button>
+				<button id="add_host">Add new host</button>
+				<div id="service_list"></div>
+			</td>
+			<td width="60%" valign="top">
+				<div id="drag">
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class="separator"></div>
+
+	<textarea cols="100" rows="10" id="json_source" class="normal-text"></textarea>
+	<p>
+	<button id="load_from_json">Reload from JSON</button> 	<button id="load_into_json">Save to JSON</button>
+	
+	<div class="bottom-credits">(c) <a href="http://www.linkedin.com/in/ayarmula" target="_new">Alex Yarmula</a> 2011</div>
+	
+	<div class="hidden" id="edit-service-form" title="Edit service">
+		<p class="validateTips">Please fill out the service description.</p>
+
+		<form>
+		<fieldset>
+			<label for="name">Name</label>
+			<input type="text" name="edit_service_name" id="edit_service_name" class="text ui-widget-content ui-corner-all" />
+			<label for="version">Version</label>
+			<input type="text" name="edit_service_version" id="edit_service_version" class="text ui-widget-content ui-corner-all" />
+			<label for="description">Description</label>
+			<textarea name="edit_service_description" id="edit_service_description" class="ui-widget-content ui-corner-all" cols="45" rows="5"></textarea>
+			<label for="dependencies">Dependencies</label>
+			<input type="text" name="edit_service_dependencies" id="edit_service_dependencies" class="text ui-widget-content ui-corner-all" />
+			<label for="color">Color</label>
+			<input type="text" name="edit_service_color" id="edit_service_color" class="text ui-widget-content ui-corner-all" />
+		</fieldset>
+		</form>
+	</div>
+
+	<div class="hidden" id="edit-host-form" title="Edit host">
+		<p class="validateTips">Please enter the host information.</p>
+
+		<form>
+		<fieldset>
+			<label for="name">Hostname</label>
+			<input type="text" name="edit_host_hostname" id="edit_host_hostname" class="text ui-widget-content ui-corner-all" />
+		</fieldset>
+		</form>
+	</div>
+	
+	<div class="hidden" id="alert-message" title="System message">
+		<span id="alert-message-text"></span>
+		<p/>
+	</div>
+	
+	<ul id="service_context_menu" class="jqcontextmenu">
+		<li><a class="context_menu_link" href="javascript:void(0)">Show all dependent services</a></li>
+		<li><a class="context_menu_link" href="javascript:void(0)">Show all dependent on this</a></li> <!-- upstream -->
+		<li><a class="context_menu_link" href="javascript:void(0)">Show all this depends on</a></li> <!-- downstream -->
+		<li><a class="context_menu_link" href="javascript:void(0)">Show all services</a></li>		
+	</ul>
+
+
+</body>
+</html>

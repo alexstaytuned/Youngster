@@ -1,0 +1,26 @@
+Youngster v. 0.01
+* First version
+
+------------------------------------------------------------------------------------
+We often have multiple services running on boxes, some of them talking cross-datacenter, and tangled dependencies between them.
+
+Being able to visualize the application-level services, their connections/dependencies, and their configuration can help in the following ways:
+- working with distributed teams, it’s easier to “whiteboard” when you have a common medium to share,
+- architecture can be a subject of exchange between Dev and Ops and facilitate understanding,
+- teams assess risks better by being able to see how each of the components interacts with others,
+- on-call engineers can see an alert that “service A is down”, check the architecture graph and quickly understand an impact, save the architecture for a future reference and review it with peers.
+
+To help with visualizing architectures, this tool lets you add services, hosts, and map them to each other. Some of the features:
+- right-click on a service icon under “All Services” to highlight all dependencies, downstream dependencies (this service depends on), or upstream dependencies (depend on this service),
+- drag-and-drop services between the hosts and color-coding for better visual support,
+- save the whole configuration as a JSON file (click ‘Save to JSON’). Because JSON is text, one can version those files in their Version Control System and easily share,
+- restore the configuration from JSON (‘Reload from JSON’).
+
+------------------------------------------------------------------------------------
+Usage:
+1. Download the source
+2. Open src/main/html/index.html in the browser
+
+------------------------------------------------------------------------------------
+Licensing:
+This software is open source and distributed "as is".

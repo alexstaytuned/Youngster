@@ -1,0 +1,49 @@
+.normal-text {
+	font-size: 14px;
+}
+
+fieldset input.text {
+	margin-bottom:12px; width:95%; padding: .4em;
+}
+
+.hidden {
+	display:none;
+}
+
+.host-button {
+   font-size: .8em !important;
+   float: right;
+}
+
+.transparent {
+   filter:alpha(opacity=20);
+   -moz-opacity: 0.2;
+   opacity: 0.2;
+}
+
+.youngster-heading {
+	font-size: 25px;
+	margin-left: 10px;
+	float: left;
+}
+
+.youngster-subheading {
+	width: 70%;
+	font-size: 20px;
+	margin-left: 20px;
+	float: left;
+}
+
+.separator {
+	clear:both;
+	border-bottom-style: solid; 
+	border-bottom-color: #A6C9E2;
+	border-bottom-width: 2px;
+	margin: 20px 0 25px 0;
+}
+
+.bottom-credits {
+	font-size: 14pt;
+	float: right;
+	
+}
