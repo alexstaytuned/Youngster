@@ -13,7 +13,7 @@ depmgr.show_dependencies = function(e, upstream, downstream) {
 	// service name for which to show dependencies
 	var service_name = e.currentTarget.service_name;
 	// clone the services
-	var services = jQuery.extend(true, [], servicemgr.data_json.services);
+	var services = $.extend(true, [], servicemgr.data_json.services);
 	if(upstream) this.mark_all_upstream_dependencies_within(service_name, services);
 	if(downstream) this.mark_all_downstream_dependencies_within(service_name, services);
 	
@@ -52,20 +52,33 @@ depmgr.mark_all_downstream_dependencies_within = function(service_name, services
 }
 
 
-depmgr.validate_dependencies_for = function(parent_service_name, dependencies) {
-	return this.get_incorrect_dependencies_for(parent_service_name, dependencies).length == 0;
+depmgr.validate_dependencies_for = function(service_to_verify, all_services) {
+	return this.get_incorrect_dependencies_for(service_to_verify, all_services).length == 0;
 };
 
-depmgr.get_incorrect_dependencies_for = function(parent_service_name, dependencies) {
+depmgr.get_incorrect_dependencies_for = function(service_to_verify, all_services) {
+	var parent_service_name = service_to_verify.name;
+	var dependencies = service_to_verify.dependencies;
 	var incorrect_deps = [];
-	var service_names = servicemgr.get_service_names(servicemgr.data_json.services);
+	var service_names = servicemgr.get_service_names(all_services);
 	$.each(dependencies, function(dep_index, dep_name) {
-		if($.inArray(dep_name, service_names) == -1) incorrect_deps.push(dep_name);
+		if($.inArray(dep_name, service_names) == -1) {
+			incorrect_deps.push(dep_name);
+		}
 		if(dep_name == parent_service_name) incorrect_deps.push(dep_name + " (can't depend on itself)");
 	});
 	return incorrect_deps;
 };
 
+depmgr.get_all_dependencies_for_service = function(service_name_to_verify, all_services) {
+	var dependencies_for_service = [];
+	$.each(all_services, function(service_index, service) {
+		$.each(service.dependencies, function(dep_index, dep_name) {
+			if(dep_name == service_name_to_verify) dependencies_for_service.push(service.name);
+		});
+	});
+	return dependencies_for_service;
+};
 
 depmgr.convert_string_to_dep_array = function(dep_string) {
 	var dep_array = []

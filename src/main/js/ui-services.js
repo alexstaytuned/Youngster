@@ -47,18 +47,11 @@ servicemgr.delete_service = function(service_name_to_remove) {
 		    return service.name != service_name_to_remove;
 		});
 		
-		/*TODO: separate out*/
-		var exist_dependencies = [];
-		$.each(new_service_array, function(service_index, a_service) {
-			if(! depmgr.validate_dependencies_for(service_name_to_remove, a_service.dependencies)) {
-				exist_dependencies.push(a_service.name);
-			} // else -- validation passed, continue
-		});
-		if(exist_dependencies.length > 0) {
-			$.alert("Can't remove a service that other services depend on: " + exist_dependencies.join(", "));
+		var existing_dependencies = depmgr.get_all_dependencies_for_service(service_name_to_remove, new_service_array);
+		if(existing_dependencies.length > 0) {
+			$.alert("Can't remove a service that other services depend on: " + existing_dependencies.join(", "));
 			return;
 		}
-		/*end TODO*/
 		
 		this.data_json.services = new_service_array;
 		
@@ -82,7 +75,7 @@ servicemgr.add_service = function() {
 	this.reload_services();
 }
 
-servicemgr.edit_service = function(service) {
+servicemgr.edit_service = function(current_service) {
 	var self = this;
 	$("#edit-service-form").dialog({
 				autoOpen: false,
@@ -91,20 +84,23 @@ servicemgr.edit_service = function(service) {
 				modal: true,
 				buttons: {
 					"Save": function() {
-						var old_name = service.name;
-						var new_name = $("#edit_service_name").val();
-						draggr.redraw_service_on_hosts(old_name, new_name, $("#edit_service_color").val());
-						service.name = new_name;
-						service.version = $("#edit_service_version").val();
-						service.description = $("#edit_service_description").val();
-						service.color = $("#edit_service_color").val();
-						var dependencies = depmgr.convert_string_to_dep_array($("#edit_service_dependencies").val());
-						if(! depmgr.validate_dependencies_for(service.name, dependencies)) {
-							$.alert("The following dependencies are incorrect: " + depmgr.get_incorrect_dependencies_for(service.name, dependencies).join(", "));
-							return false;
+						var new_service = $.extend(true, {}, current_service);
+						new_service.name = $("#edit_service_name").val();
+						new_service.version = $("#edit_service_version").val();
+						new_service.description = $("#edit_service_description").val();
+						new_service.color = $("#edit_service_color").val();
+						new_service.dependencies = depmgr.convert_string_to_dep_array($("#edit_service_dependencies").val());
+						
+						if(! depmgr.validate_dependencies_for(new_service, self.data_json.services)) {
+							$.alert("The following dependencies are incorrect: " + 
+									depmgr.get_incorrect_dependencies_for(new_service, self.data_json.services).join(", "));
+							return false; // don't save anything and return user to the UI dialog
 						} // else -- dependencies are correct, proceed
-						service.dependencies = dependencies;
-						depmgr.update_dependency_names(old_name, new_name);
+
+						// at this point the validation is over; deep-copy the object into the current_service
+						current_service = $.extend(true, current_service, new_service);
+						draggr.redraw_service_on_hosts(current_service.name, new_service.name, new_service.color);
+						depmgr.update_dependency_names(current_service.name, new_service.name);
 						$(this).dialog("close");
 					},
 					Cancel: function() {
@@ -115,11 +111,11 @@ servicemgr.edit_service = function(service) {
 					self.reload_services();
 				}
 	});
-	$("#edit_service_name").val(service.name);
-	$("#edit_service_version").val(service.version);	
-	$("#edit_service_description").val(service.description);
-	$("#edit_service_color").val(service.color);
-	$("#edit_service_dependencies").val(service.dependencies.join(","));	
+	$("#edit_service_name").val(current_service.name);
+	$("#edit_service_version").val(current_service.version);	
+	$("#edit_service_description").val(current_service.description);
+	$("#edit_service_color").val(current_service.color);
+	$("#edit_service_dependencies").val(current_service.dependencies.join(","));	
 	$("#edit-service-form").dialog("open");
 }
 

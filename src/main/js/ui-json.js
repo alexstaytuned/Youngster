@@ -19,13 +19,19 @@ servicemgr.intake_json = function() {
 		$.alert("Names of the services must be unique.");
 		return;
 	}
+	var found_errors = false;
 	$.each(data_json_tmp.services, function(index, service) {
-		if(! depmgr.validate_dependencies_for(service.name, service.dependencies)) {
-			$.alert("The following dependencies are incorrect: " + depmgr.get_incorrect_dependencies_for(service.name, service.dependencies));
-			return;
+		if(! depmgr.validate_dependencies_for(service, data_json_tmp.services)) {
+			$.alert("The following dependencies are incorrect: " + depmgr.get_incorrect_dependencies_for(service, data_json_tmp.services));
+			found_errors = true;
 		}
 	});
-	this.data_json = data_json_tmp;
+
+	if(found_errors) {
+		return;
+	} // else -- no errors found, continue
+	
+	this.data_json = data_json_tmp; // assign to the "source of truth", because everything is correct
 	this.reload_services();
 	draggr.reload_hosts();
 };
