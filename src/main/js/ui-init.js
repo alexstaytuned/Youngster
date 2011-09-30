@@ -16,4 +16,5 @@ $(document).ready(function() {
 	draggr.reload_hosts();
 
 	depmgr.activate_dependency_context_menu();
+	depmgr.activate_dependency_autocomplete();	
 });

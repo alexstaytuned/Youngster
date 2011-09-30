@@ -32,6 +32,8 @@ servicemgr.reload_services = function() {
 			$("#edit_service_" + underscorify(service.name)).button();
 			$("#edit_service_" + underscorify(service.name)).click(function() {
 				self.edit_service(service);
+				// refresh service names for dependency autocomplete module
+				depmgr.service_names_autocomplete = servicemgr.get_service_names(self.data_json.services);
 			});
 			$("#remove_service_" + underscorify(service.name)).button();			
 			$("#remove_service_" + underscorify(service.name)).click(function() {
@@ -66,7 +68,8 @@ servicemgr.delete_service = function(service_name_to_remove) {
 };
 
 servicemgr.add_service = function() {
-	var new_service = {"name": "New_service", "version": "Unknown", "description": "None", "color": "lightblue", "dependencies": []};
+	var random_color = colorMapper.color_mappings[Math.floor(Math.random() * colorMapper.color_mappings.length)].name;
+	var new_service = {"name": "New_service", "version": "Unknown", "description": "None", "color": random_color, "dependencies": []};
 	if(! this.has_service_within(new_service.name, this.data_json.services)) {
 		this.data_json.services.unshift(new_service);
 	} else {
