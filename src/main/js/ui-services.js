@@ -54,7 +54,7 @@ Delete a service by name. This works because unique service naming is enforced u
 Side effects: yes
 */
 servicemgr.delete_service = function(service_name_to_remove) {
-		
+		var self = this;
 		var new_service_array = $.grep(this.data_json.services, function(service) {
 		    return service.name != service_name_to_remove;
 		});
@@ -67,13 +67,11 @@ servicemgr.delete_service = function(service_name_to_remove) {
 		
 		this.data_json.services = new_service_array;
 		
-		$('#json_source').val(JSON.stringify(data_json, null, 4));
 		this.reload_services();
 		$.allContainingText(service_name_to_remove, "#drag div").remove();
 		$.each(this.data_json.hosts, function(host_index, a_host) {
-			$.each(a_host.services, function(service_index, a_service) {
-				if(a_service.name == service_name_to_remove) a_host.services.splice(service_index, 1);
-			});
+			var service_to_remove = self.find_service_by_name_within(service_name_to_remove, a_host.services);
+			delete a_host.services[service_to_remove];
 		});
 };
 
