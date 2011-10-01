@@ -1,3 +1,11 @@
+if(! depmgr) var depmgr = {};
+
+/*
+Activates multi-field autocomplete for dependency names. This expects 
+	depmgr.service_names_autocomplete to have the latest dependency names
+	at the time of the autocomplete event (not init time).
+Side effects: yes
+*/
 depmgr.activate_dependency_autocomplete = function() {
 	var self = this;
 	var element_id = "edit_service_dependencies";
@@ -9,7 +17,7 @@ depmgr.activate_dependency_autocomplete = function() {
 				return val.split( /,\s*/ );
 			}
 			function extractLast( term ) {
-				return split( term ).pop();
+				return split(term).pop();
 			}
 
 			$("#" + element_id)
@@ -44,4 +52,27 @@ depmgr.activate_dependency_autocomplete = function() {
 					}
 				});
 		});
+};
+
+/*
+Sets context menu content for service names. Make sure it matches the order of src/main/html/index.html
+Side effects: yes
+*/
+depmgr.activate_dependency_context_menu = function() {
+	var self = this;
+	$("li:eq(0) .context_menu_link").click(function(e) {
+		self.show_dependencies(e, true, true);
+	});
+
+	$("li:eq(1) .context_menu_link").click(function(e) {
+		self.show_dependencies(e, true, false);
+	});
+	
+	$("li:eq(2) .context_menu_link").click(function(e) {
+		self.show_dependencies(e, false, true);
+	});	
+
+	$("li:eq(3) .context_menu_link").click(function(e) {
+		self.show_all_dependencies();
+	});
 };

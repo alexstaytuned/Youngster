@@ -1,6 +1,12 @@
 if(! servicemgr) var servicemgr = {};
 
-// servicemgr namespace and 
+// servicemgr namespace and main functions
+
+/*
+Reloads the services list from this.data_json.services.
+	Calling this multiple times is safe.
+Side effects: yes
+*/
 servicemgr.reload_services = function() {
 		var self = this;
 
@@ -43,6 +49,10 @@ servicemgr.reload_services = function() {
 		});
 };
 
+/*
+Delete a service by name. This works because unique service naming is enforced upon creation/updates.
+Side effects: yes
+*/
 servicemgr.delete_service = function(service_name_to_remove) {
 		
 		var new_service_array = $.grep(this.data_json.services, function(service) {
@@ -67,6 +77,10 @@ servicemgr.delete_service = function(service_name_to_remove) {
 		});
 };
 
+/*
+Adds a service with default settings, named "New_service" and with a random colo. This reloads UI list of all services
+Side effects: yes
+*/
 servicemgr.add_service = function() {
 	var random_color = colorMapper.color_mappings[Math.floor(Math.random() * colorMapper.color_mappings.length)].name;
 	var new_service = {"name": "New_service", "version": "Unknown", "description": "None", "color": random_color, "dependencies": []};
@@ -78,6 +92,11 @@ servicemgr.add_service = function() {
 	this.reload_services();
 }
 
+/*
+Supports edits of services. Sets up a modal window, does validation and saves results. Reloads the services list afterwards.
+Arguments: current_service: full service object
+Side effects: yes
+*/
 servicemgr.edit_service = function(current_service) {
 	var self = this;
 	$("#edit-service-form").dialog({
