@@ -1,5 +1,4 @@
-Youngster v. 0.01
-* First version
+View live demo: http://architecture-tool.appspot.com/
 
 ------------------------------------------------------------------------------------
 We often have multiple services running on boxes, some of them talking cross-datacenter, and tangled dependencies between them.
@@ -20,6 +19,15 @@ To help with visualizing architectures, this tool lets you add services, hosts, 
 Usage:
 1. Download the source
 2. Open src/main/html/index.html in the browser
+
+------------------------------------------------------------------------------------
+Youngster v. 0.02 (September 30, 2011)
+* Fixed minor bugs related to removing services and restoring from JSON
+* Added autocomplete for dependencies
+* Added random color selection for new services
+
+Youngster v. 0.01 (September 23, 2011)
+* First version
 
 ------------------------------------------------------------------------------------
 Licensing:
