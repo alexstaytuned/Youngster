@@ -118,9 +118,9 @@ servicemgr.edit_service = function(current_service) {
 						} // else -- dependencies are correct, proceed
 
 						// at this point the validation is over; deep-copy the object into the current_service
-						current_service = $.extend(true, current_service, new_service);
 						draggr.redraw_service_on_hosts(current_service.name, new_service.name, new_service.color);
 						depmgr.update_dependency_names(current_service.name, new_service.name);
+						current_service = $.extend(true, current_service, new_service);
 						$(this).dialog("close");
 					},
 					Cancel: function() {

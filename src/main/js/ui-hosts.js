@@ -203,6 +203,7 @@ draggr.add_host_control_buttons = function(table_id) {
 };
 
 draggr.redraw_service_on_hosts = function(old_name, new_name, new_color) {
+	console.log("in redraw. old name = " + old_name + ", new name is " + new_name);
 	var elements_to_update = $.allContainingText(old_name, "#drag div");
 	elements_to_update.text(new_name);
 	elements_to_update.css('background-color', new_color);
