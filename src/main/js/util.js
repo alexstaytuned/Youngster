@@ -1,5 +1,7 @@
 function underscorify(string) {
-	return string.replace(/ /g,"_");
+	var new_string = string.replace(/ /g,"_");
+	new_string = string.replace(/[^A-Za-z]/g,"");
+	return new_string;
 }
 
 $.hasLength = function(string) {
